@@ -1,0 +1,179 @@
+<!DOCTYPE html>   
+<html>   
+<head>  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title> Display Data</title>  
+<style>
+* {
+  font-family: sans-serif;
+}
+
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 400px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.content-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+  font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+  padding: 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.content-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
+}
+</style>
+</head>
+<body>
+<h3><b>Enter DAC : </b></h3>
+
+ 
+<input id="dac_to_display" />
+<button onClick="DisplayIt()">Show</button><br />
+<table class="content-table">
+    <thead>
+      <tr>
+        <th>Sr.No</th>
+        <th>DAC</th>
+        <th>Address</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+      </tr>
+    </thead>
+    <tbody id="tbdata">
+      
+        
+    </tbody>
+
+  </table>
+  <div id="googleMap" style="width:50%;height:400px;"></div>
+
+    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+  <script id="Mainscript">
+    const firebaseConfig = {
+    apiKey: "AIzaSyBsUd89yVV76RB5GMX-F9nD5u4t9XAlUKE",
+    authDomain: "sih-hackathon-4aaa2.firebaseapp.com",
+    databaseURL: "https://sih-hackathon-4aaa2-default-rtdb.firebaseio.com",
+    projectId: "sih-hackathon-4aaa2",
+    storageBucket: "sih-hackathon-4aaa2.appspot.com",
+    messagingSenderId: "1034408671019",
+    appId: "1:1034408671019:web:a3ffc81a34d5f98a3cb76e",
+    measurementId: "G-25PERP992B"
+  };
+  //initialize firebase
+  firebase.initializeApp(firebaseConfig);
+  var latValue={};
+  var longValue={};
+  var loc={};
+  
+
+  function SelectAllData(dactoDisplay){
+    firebase.database().ref('dac').once('value',
+    function (Records){
+      Records.forEach(
+        function(CurrentRecord){
+          //var id = "PW090I0XZNRX";
+
+          var dac = CurrentRecord.val().dac;
+          var add = CurrentRecord.val().add;
+          
+
+          if(dactoDisplay==dac)
+          {
+            latValue = CurrentRecord.val().lat;
+             longValue = CurrentRecord.val().long;
+             console.log(latValue);
+             myMap();
+             
+            
+            AddItemsToTable(dac,add,latValue,longValue);
+            
+            
+          }
+
+        }
+      );
+    });
+  }
+  //window.onload = SelectAllData;
+  var citno =0//citizen number
+  function AddItemsToTable(dac,add,latValue,longValue){
+    var  tbody = document.getElementById('tbdata');
+    var trow = document.createElement('tr');
+    var td1 = document.createElement('td');
+    var td2 = document.createElement('td');
+    var td3 = document.createElement('td');
+    var td4 = document.createElement('td');
+    var td5 = document.createElement('td');
+
+    td1.innerHTML= ++citno;
+    td2.innerHTML = dac;
+    td3.innerHTML = add;
+    td4.innerHTML = latValue;
+    td5.innerHTML = longValue;
+
+
+    trow.appendChild(td1); trow.appendChild(td2);
+    trow.appendChild(td3); trow.appendChild(td4); trow.appendChild(td5);
+
+    tbody.appendChild(trow);
+
+  }
+function DisplayIt(){
+  var dactoDisplay = document.getElementById("dac_to_display").value;
+  SelectAllData(dactoDisplay)
+}
+function myMap() {
+    
+  
+ 
+    
+    var mapProp= {
+      center: {lat: 28.6440, lng: 77.0910},
+      zoom:2.5
+    };
+    var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+    var marker = new google.maps.Marker({
+        position:new google.maps.LatLng(latValue,longValue),
+          //  {lat: 26.78137752954768, lng: 75.82038901481127},
+            
+        
+        map: map
+    });
+    
+    }
+    
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX__PIoS574h-oZk8NYKveCxcSWZvsV6E&callback=myMap"></script>
+
+
+
+
+
+</body>
+</html>
