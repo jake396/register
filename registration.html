@@ -1,0 +1,163 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<style>  
+body{  
+  font-family: Calibri, Helvetica, sans-serif;  
+  background-color: pink;  
+}  
+.container {  
+    padding: 200px;  
+  background-color: rgb(101, 187, 245);  
+}  
+  
+input[type=text], input[type=password], textarea {  
+  width: 100%;  
+  padding: 15px;  
+  margin: 5px 0 22px 0;  
+  display: inline-block;  
+  border: groove;  
+  background: #f1f1f1;  
+}  
+ 
+ div {  
+            padding: 10px 0;  
+         }  
+hr {  
+  border: 1px solid #f1f1f1;  
+  margin-bottom: 25px;  
+}  
+.registerbtn {  
+  background-color: #4CAF50;  
+  color: white;  
+  padding: 16px 20px;  
+  margin: 8px 0;  
+  border: none;  
+  cursor: pointer;  
+  width: 100%;  
+  opacity: 0.9;  
+}  
+.registerbtn:hover {  
+  opacity: 1;  
+} 
+.alert{
+  width: 100%;
+  background: rgb(36, 248, 36);
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 900;
+  display: none;
+} 
+.map{
+  height: 50%;
+  width: 200%;
+  
+}
+</style>  
+</head>  
+<body>  
+<form action="" id="dacform"> 
+  <div class="alert">Registered Successfully</div> 
+  <div class="container">  
+  <center>  <h1> Digital Address Code (DAC) Registeration Form</h1> </center>  
+  <hr>  
+  <label><b>Name : </b> </label>   
+<input type="text" id="name" placeholder= "Name" size="50" required />   
+  
+<div>  
+<label>   
+<b>Date of Birth : </b> 
+</label>   
+  
+<input type="date" id="dob" required /> 
+</div>  
+<div>  
+<label>   
+<b>Gender : </b> 
+</label><br>  
+<input type="radio" value="Male" id="gender" checked > Male   
+<input type="radio" value="Female" id="gender"> Female   
+<input type="radio" value="Other" id="gender"> Other  
+  
+</div>
+
+<div>
+    <label>
+        <b>Aadhar Number : </b>
+    </label>
+    <input type="text" id="aadhno" size="12"/ required>
+</div>
+
+
+<label>   
+<b>Phone : </b>  
+
+</label>  
+<input type="text" id="country code" placeholder="Country Code"  value="+91" size="2"/>   
+<input type="text" id="phone" placeholder="Aadhar Linked Phone Number" size="10"/ required>  
+
+
+    
+<b>Address : </b> 
+     
+<textarea cols="80" rows="5" id="add" placeholder="Aadhar Registered Address" value="address" / required> 
+</textarea> 
+<button onclick="getLocation()">Get Location</button>
+<br>
+<p>Click the button to get your coordinates:</p>
+
+<label>
+    <b>Latitude : </b>
+</label>
+<input id="lat" type="text" name="Latitude" />  <br />
+<label>
+    <b>Longitude:  </b>
+</label>
+<input id="long" type="text" name="Longitude" />
+
+<script>
+   var x=document.getElementById("lat");
+var y=document.getElementById("long");
+function getLocation()
+  {
+  if (navigator.geolocation)
+    {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";}
+  }
+function showPosition(position)
+  {
+  x.value=position.coords.latitude;  
+  y.value=position.coords.longitude;    
+  }
+    
+    </script>
+
+
+  
+
+ 
+ 
+  
+<button type="submit" class="registerbtn">Register</button> 
+<button onclick="window.location.href='displaydata.html'" class="registerbtn">Enter DAC</button>   
+</form> 
+
+
+
+
+
+
+  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+
+
+
+<script src="./mail.js"></script>
+</body>  
+</html> 
